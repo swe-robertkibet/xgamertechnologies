@@ -9,7 +9,6 @@ export { default as LandingPcBuilderCta } from './LandingPcBuilderCta.vue';
 export { default as LandingPopularBuilds } from './LandingPopularBuilds.vue';
 export { default as LandingRepairServices } from './LandingRepairServices.vue';
 export { default as LandingCareers } from './LandingCareers.vue';
-export { default as LandingNewsletter } from './LandingNewsletter.vue';
 export { default as LandingFooter } from './LandingFooter.vue';
 
 // Export types

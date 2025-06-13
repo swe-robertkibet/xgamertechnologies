@@ -46,10 +46,12 @@ export interface CareerStat {
 export interface ContactInfo {
   icon: string;
   text: string;
+  subtext?: string; // Added for enhanced contact info
 }
 
 export interface FooterSection {
   title: string;
+  icon?: string; // Added for enhanced footer sections
   links: FooterLink[];
 }
 
@@ -61,6 +63,30 @@ export interface FooterLink {
 export interface NavigationLink {
   label: string;
   href: string;
+}
+
+// Enhanced interfaces for the new footer design
+export interface ContactInfoExtended extends ContactInfo {
+  subtext: string;
+}
+
+export interface FooterSectionExtended extends FooterSection {
+  icon: string;
+}
+
+export interface ServiceStat {
+  value: string;
+  label: string;
+}
+
+export interface BrandStat {
+  value: string;
+  label: string;
+}
+
+export interface NewsletterBenefit {
+  icon: string;
+  text: string;
 }
 
 // Event types for component communication
@@ -95,6 +121,7 @@ export interface PopularBuildsProps {
 export interface LandingFooterProps {
   socialLinks: SocialLink[];
   onOpenSocial: (url: string) => void;
+  onSubscribe: (email: string) => void;
 }
 
 export interface NewsletterSignupProps {
@@ -110,9 +137,4 @@ export interface ThemeColors {
   surface: string;
   text: string;
   textSecondary: string;
-}
-
-export interface ServiceStat {
-  value: string;
-  label: string;
 }

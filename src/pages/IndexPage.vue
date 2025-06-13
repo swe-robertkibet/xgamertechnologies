@@ -17,11 +17,10 @@
       <LandingRepairServices @book-repair="handleBookRepair" />
 
       <LandingCareers @view-careers="handleViewCareers" />
-
-      <LandingNewsletter @subscribe="handleSubscribeNewsletter" />
     </main>
 
-    <LandingFooter @open-social="handleOpenSocial" />
+    <!-- Footer now includes newsletter -->
+    <LandingFooter @open-social="handleOpenSocial" @subscribe="handleSubscribeNewsletter" />
   </div>
 </template>
 
@@ -29,7 +28,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-// Import all landing page components from index.ts
+// Import all landing page components from index.ts (except LandingNewsletter)
 import {
   LandingHeader,
   LandingHero,
@@ -39,7 +38,6 @@ import {
   LandingPopularBuilds,
   LandingRepairServices,
   LandingCareers,
-  LandingNewsletter,
   LandingFooter
 } from 'components/landing'
 
