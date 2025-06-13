@@ -29,7 +29,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-// Import all landing page components from centralized index
+// Import all landing page components from index.ts
 import {
   LandingHeader,
   LandingHero,
