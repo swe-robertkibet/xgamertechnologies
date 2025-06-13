@@ -22,12 +22,14 @@
       /* Reserve scrollbar space but control when scrolling is enabled */
       html {
         scrollbar-gutter: stable; /* Always reserve space for scrollbar */
+        background: #000000; /* Ensure html background matches loading screen */
       }
 
       /* Disable scroll during loading */
       body.loading {
         overflow: hidden; /* Prevent scrolling during loading */
         height: 100vh; /* Lock height to viewport */
+        background: #000000; /* Ensure body background is black during loading */
       }
 
       /* Enable scroll after loading */
