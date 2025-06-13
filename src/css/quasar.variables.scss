@@ -1,4 +1,4 @@
-// Quasar SCSS (& Sass) Variables
+// Quasar SCSS/Sass Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
 // the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
@@ -6,20 +6,116 @@
 // Check documentation for full list of Quasar variables
 
 // Your own variables (that are declared here) and Quasar's own
-// ones will be available out of the box in your .vue/.scss/.sass files
+// ones will be available out of the box in your .vue files
 
 // It's highly recommended to change the default colors
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary   : #1976D2;
-$secondary : #26A69A;
-$accent    : #9C27B0;
+$primary: #1976d2;
+$secondary: #26a69a;
+$accent: #9c27b0;
 
-$dark      : #1D1D1D;
-$dark-page : #121212;
+$dark: #1d1d1d;
+$dark-page: #121212;
 
-$positive  : #21BA45;
-$negative  : #C10015;
-$info      : #31CCEC;
-$warning   : #F2C037;
+$positive: #21ba45;
+$negative: #c10015;
+$info: #31ccec;
+$warning: #f2c037;
+
+// Gaming Landing Page Custom Variables
+// --------------------------------------------------
+
+// Brand Colors
+$brand-gradient-start: #ef4444; // Red
+$brand-gradient-middle: #a855f7; // Purple
+$brand-gradient-end: #3b82f6; // Blue
+
+// Background Colors
+$bg-primary: #000000;
+$bg-secondary: rgb(9, 9, 11);
+$bg-card: rgb(39, 39, 42);
+$bg-card-hover: rgba(39, 39, 42, 0.5);
+
+// Text Colors
+$text-primary: #ffffff;
+$text-secondary: rgb(161, 161, 170);
+$text-muted: rgb(113, 113, 122);
+
+// Border Colors
+$border-primary: rgb(39, 39, 42);
+$border-hover: rgb(147, 51, 234);
+
+// Gradient Colors
+$gradient-primary: linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246));
+$gradient-primary-hover: linear-gradient(to right, rgb(126, 34, 206), rgb(37, 99, 235));
+$gradient-text: linear-gradient(to right, #fff, rgb(196, 181, 253), rgb(147, 197, 253));
+$gradient-section-title: linear-gradient(to right, #fff, rgb(196, 181, 253));
+
+// Hero Colors
+$hero-badge-bg: rgba(147, 51, 234, 0.2);
+$hero-badge-text: rgb(196, 181, 253);
+$hero-overlay: linear-gradient(to right, #000, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
+
+// Button Colors
+$btn-secondary-border: rgb(113, 113, 122);
+$btn-secondary-bg: rgba(0, 0, 0, 0.5);
+$btn-secondary-hover: rgb(39, 39, 42);
+
+// Price Colors
+$price-current: rgb(34, 197, 94);
+$price-original: rgb(161, 161, 170);
+
+// Sale Colors
+$sale-badge: rgb(239, 68, 68);
+
+// Icon Colors
+$icon-primary: rgb(147, 51, 234);
+
+// Shadow Colors
+$shadow-card: 0 20px 40px rgba(0, 0, 0, 0.3);
+$shadow-card-hover: 0 4px 20px rgba(147, 51, 234, 0.2);
+
+// Transition Values
+$transition-default: 0.2s ease;
+$transition-transform: transform 0.2s ease;
+
+// Spacing
+$section-padding: 5rem 0;
+$container-padding: 0 1rem;
+$card-padding: 2rem;
+$card-padding-small: 1.5rem;
+
+// Border Radius
+$border-radius-card: 1rem;
+$border-radius-button: 0.5rem;
+$border-radius-full: 9999px;
+
+// Typography
+$font-size-hero: clamp(2rem, 8vw, 4.5rem);
+$font-size-section-title: 2.5rem;
+$font-size-card-title: 1.25rem;
+$font-size-body: 1.125rem;
+$font-size-small: 0.875rem;
+$font-size-xs: 0.75rem;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+$line-height-tight: 1.1;
+$line-height-normal: 1.6;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+
+// Z-Index
+$z-header: 50;
+$z-overlay: 10;
+$z-hero-content: 20;
