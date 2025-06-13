@@ -1,3 +1,4 @@
+<!-- src/components/landing-page/FeaturedCategories.vue -->
 <template>
   <section class="featured-categories">
     <div class="container">
@@ -7,7 +8,7 @@
       </div>
       <div class="categories-grid">
         <div class="category-card" v-for="category in categories" :key="category.title"
-          @click="handleCategoryClick(category)">
+          @click="$emit('navigateToCategory', category.slug)">
           <div class="category-image">
             <img :src="category.image" :alt="category.title" />
             <div class="category-overlay">
@@ -26,75 +27,66 @@
 </template>
 
 <script setup lang="ts">
-export interface Category {
-  title: string
-  description: string
-  image: string
-  startingPrice: number
-  slug: string
-}
+import { ref } from 'vue'
+import type { FeaturedCategory } from './landing-types'
 
 interface Props {
   title?: string
   subtitle?: string
-  categories?: Category[]
-}
-
-interface Emits {
-  (e: 'category-click', category: Category): void
+  categories?: FeaturedCategory[]
 }
 
 withDefaults(defineProps<Props>(), {
   title: 'Featured Categories',
-  subtitle: 'Explore our premium gaming hardware collection',
-  categories: () => [
-    {
-      title: 'Gaming PCs',
-      description: 'High-performance pre-built systems',
-      image: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      startingPrice: 1299,
-      slug: 'gaming-pcs'
-    },
-    {
-      title: 'Graphics Cards',
-      description: 'Latest RTX 40 Series & AMD RDNA3',
-      image: 'https://images.unsplash.com/photo-1591238371406-0a39e2e7a61c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      startingPrice: 399,
-      slug: 'graphics-cards'
-    },
-    {
-      title: 'Processors',
-      description: 'Intel 13th Gen & AMD Ryzen 7000',
-      image: 'https://images.unsplash.com/photo-1555617981-dac3880eac6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      startingPrice: 199,
-      slug: 'processors'
-    },
-    {
-      title: 'Gaming Monitors',
-      description: '4K, 144Hz, OLED displays',
-      image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      startingPrice: 299,
-      slug: 'monitors'
-    }
-  ]
+  subtitle: 'Explore our premium gaming hardware collection'
 })
 
-const emit = defineEmits<Emits>()
+defineEmits<{
+  navigateToCategory: [slug: string]
+}>()
 
-const handleCategoryClick = (category: Category) => {
-  emit('category-click', category)
-}
+const categories = ref<FeaturedCategory[]>([
+  {
+    title: 'Gaming PCs',
+    description: 'High-performance pre-built systems',
+    image: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    startingPrice: 1299,
+    slug: 'gaming-pcs'
+  },
+  {
+    title: 'Graphics Cards',
+    description: 'Latest RTX 40 Series & AMD RDNA3',
+    image: 'https://images.unsplash.com/photo-1591238371406-0a39e2e7a61c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    startingPrice: 399,
+    slug: 'graphics-cards'
+  },
+  {
+    title: 'Processors',
+    description: 'Intel 13th Gen & AMD Ryzen 7000',
+    image: 'https://images.unsplash.com/photo-1555617981-dac3880eac6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    startingPrice: 199,
+    slug: 'processors'
+  },
+  {
+    title: 'Gaming Monitors',
+    description: '4K, 144Hz, OLED displays',
+    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    startingPrice: 299,
+    slug: 'monitors'
+  }
+])
 </script>
 
 <style lang="scss" scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.featured-categories {
+  padding: $section-padding;
+  background: $bg-primary;
 }
 
-.featured-categories {
-  padding: 5rem 0;
+.container {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: $container-padding;
 }
 
 .section-header {
@@ -102,18 +94,18 @@ const handleCategoryClick = (category: Category) => {
   margin-bottom: 3rem;
 
   h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: $font-size-section-title;
+    font-weight: $font-weight-bold;
     margin-bottom: 1rem;
-    background: linear-gradient(to right, #fff, rgb(196, 181, 253));
+    background: $gradient-section-title;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   p {
-    font-size: 1.125rem;
-    color: rgb(161, 161, 170);
+    font-size: $font-size-body;
+    color: $text-secondary;
   }
 }
 
@@ -124,11 +116,11 @@ const handleCategoryClick = (category: Category) => {
 }
 
 .category-card {
-  border-radius: 1rem;
-  background: rgb(39, 39, 42);
+  border-radius: $border-radius-card;
+  background: $bg-card;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: $transition-transform;
 
   &:hover {
     transform: translateY(-4px);
@@ -159,26 +151,27 @@ const handleCategoryClick = (category: Category) => {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity $transition-default;
 }
 
 .category-info {
-  padding: 1.5rem;
+  padding: $card-padding-small;
 
   h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: $font-size-card-title;
+    font-weight: $font-weight-semibold;
     margin-bottom: 0.5rem;
+    color: $text-primary;
   }
 
   p {
-    color: rgb(161, 161, 170);
+    color: $text-secondary;
     margin-bottom: 0.5rem;
   }
 }
 
 .category-price {
-  color: rgb(34, 197, 94);
-  font-weight: 600;
+  color: $price-current;
+  font-weight: $font-weight-semibold;
 }
 </style>

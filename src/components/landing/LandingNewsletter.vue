@@ -1,16 +1,17 @@
+<!-- src/components/landing-page/NewsletterSignup.vue -->
 <template>
   <section class="newsletter-signup">
     <div class="container">
       <div class="newsletter-content">
         <div class="newsletter-text">
-          <h2>{{ title }}</h2>
-          <p>{{ description }}</p>
+          <h2>{{ props.title }}</h2>
+          <p>{{ props.description }}</p>
         </div>
         <div class="newsletter-form">
-          <q-input v-model="email" :placeholder="placeholder" outlined dense class="email-input" dark
-            @keyup.enter="handleSubmit" />
-          <q-btn unelevated class="primary-btn" @click="handleSubmit" :loading="isLoading" :disable="!email.trim()">
-            {{ buttonText }}
+          <q-input v-model="email" :placeholder="props.placeholder" outlined dense class="email-input" dark
+            @keyup.enter="handleSubscribe" />
+          <q-btn unelevated class="primary-btn" @click="handleSubscribe" :loading="isSubscribing" :disable="!email">
+            {{ props.buttonText }}
           </q-btn>
         </div>
       </div>
@@ -28,46 +29,46 @@ interface Props {
   buttonText?: string
 }
 
-interface Emits {
-  (e: 'newsletter-submit', email: string): void
-}
-
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: 'Stay Updated',
   description: 'Get the latest deals, new product announcements, and gaming tips delivered to your inbox.',
   placeholder: 'Enter your email address',
   buttonText: 'Subscribe'
 })
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  subscribe: [email: string]
+}>()
 
 const email = ref('')
-const isLoading = ref(false)
+const isSubscribing = ref(false)
 
-const handleSubmit = async () => {
-  if (!email.value.trim()) return
+const handleSubscribe = async () => {
+  if (!email.value) return
 
-  isLoading.value = true
+  isSubscribing.value = true
   try {
-    emit('newsletter-submit', email.value.trim())
-    // Reset form after successful submission
+    emit('subscribe', email.value)
+    // Clear email after successful subscription
     email.value = ''
+  } catch (error) {
+    console.error('Subscription failed:', error)
   } finally {
-    isLoading.value = false
+    isSubscribing.value = false
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.newsletter-signup {
+  padding: $section-padding;
+  background: $bg-secondary;
 }
 
-.newsletter-signup {
-  padding: 5rem 0;
-  background: rgb(9, 9, 11);
+.container {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: $container-padding;
 }
 
 .newsletter-content {
@@ -76,7 +77,7 @@ const handleSubmit = async () => {
   gap: 4rem;
   align-items: center;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     grid-template-columns: 1fr;
     gap: 2rem;
     text-align: center;
@@ -85,16 +86,16 @@ const handleSubmit = async () => {
 
 .newsletter-text {
   h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: $font-size-section-title;
+    font-weight: $font-weight-bold;
     margin-bottom: 1rem;
-    color: #fff;
+    color: $text-primary;
   }
 
   p {
-    font-size: 1.125rem;
-    color: rgb(161, 161, 170);
-    line-height: 1.6;
+    font-size: $font-size-body;
+    color: $text-secondary;
+    line-height: $line-height-normal;
   }
 }
 
@@ -102,23 +103,37 @@ const handleSubmit = async () => {
   display: flex;
   gap: 1rem;
 
-  @media (max-width: 640px) {
+  @media (max-width: $breakpoint-sm) {
     flex-direction: column;
   }
 }
 
 .email-input {
   flex: 1;
+
+  :deep(.q-field__control) {
+    background: $bg-card;
+    border-color: $border-primary;
+  }
+
+  :deep(.q-field__native) {
+    color: $text-primary;
+  }
+
+  :deep(.q-field__label) {
+    color: $text-secondary;
+  }
 }
 
 .primary-btn {
-  background: linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246));
-  color: #fff;
-  font-weight: 500;
+  background: $gradient-primary;
+  color: $text-primary;
+  font-weight: $font-weight-medium;
   padding: 0.75rem 1.5rem;
+  min-width: 120px;
 
   &:hover {
-    background: linear-gradient(to right, rgb(126, 34, 206), rgb(37, 99, 235));
+    background: $gradient-primary-hover;
   }
 }
 </style>

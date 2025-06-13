@@ -1,51 +1,34 @@
+<!-- src/components/landing-page/LandingFooter.vue -->
 <template>
-  <footer class="footer">
+  <footer class="landing-footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
           <div class="footer-brand">
             <div class="logo-gradient"></div>
-            <span class="brand-text">{{ brandName }}</span>
+            <span class="brand-text">TECH FUSION</span>
           </div>
-          <p>{{ brandDescription }}</p>
+          <p>{{ props.brandDescription }}</p>
           <div class="social-links">
-            <q-btn v-for="social in socialLinks" :key="social.name" round flat :icon="social.icon" class="social-btn"
-              @click="handleSocialClick(social)" />
+            <q-btn v-for="social in (props.socialLinks || socialLinks)" :key="social.name" round flat
+              :icon="social.icon" class="social-btn" @click="$emit('openSocial', social.url)" />
           </div>
         </div>
 
-        <div class="footer-section">
-          <h4>Products</h4>
+        <div class="footer-section" v-for="section in footerSections" :key="section.title">
+          <h4>{{ section.title }}</h4>
           <ul>
-            <li v-for="link in productLinks" :key="link.name">
-              <a :href="link.url">{{ link.name }}</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h4>Services</h4>
-          <ul>
-            <li v-for="link in serviceLinks" :key="link.name">
-              <a :href="link.url">{{ link.name }}</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h4>Support</h4>
-          <ul>
-            <li v-for="link in supportLinks" :key="link.name">
-              <a :href="link.url">{{ link.name }}</a>
+            <li v-for="link in section.links" :key="link.href">
+              <a :href="link.href">{{ link.label }}</a>
             </li>
           </ul>
         </div>
 
         <div class="footer-section contact-info">
           <h4>Contact Info</h4>
-          <div class="contact-item" v-for="contact in contactInfo" :key="contact.type">
+          <div class="contact-item" v-for="contact in contactInfo" :key="contact.text">
             <q-icon :name="contact.icon" />
-            <span>{{ contact.value }}</span>
+            <span>{{ contact.text }}</span>
           </div>
         </div>
       </div>
@@ -53,8 +36,8 @@
       <div class="footer-bottom">
         <p>{{ copyrightText }}</p>
         <div class="footer-links">
-          <a v-for="link in legalLinks" :key="link.name" :href="link.url">
-            {{ link.name }}
+          <a v-for="link in bottomLinks" :key="link.href" :href="link.href">
+            {{ link.label }}
           </a>
         </div>
       </div>
@@ -63,99 +46,87 @@
 </template>
 
 <script setup lang="ts">
-export interface FooterLink {
-  name: string
-  url: string
-}
-
-export interface SocialLink {
-  name: string
-  icon: string
-  url: string
-}
-
-export interface ContactInfo {
-  type: string
-  icon: string
-  value: string
-}
+import { ref } from 'vue'
+import type { SocialLink, FooterSection, ContactInfo, FooterLink } from './landing-types'
 
 interface Props {
-  brandName?: string
   brandDescription?: string
   copyrightText?: string
   socialLinks?: SocialLink[]
-  productLinks?: FooterLink[]
-  serviceLinks?: FooterLink[]
-  supportLinks?: FooterLink[]
-  legalLinks?: FooterLink[]
-  contactInfo?: ContactInfo[]
 }
 
-interface Emits {
-  (e: 'social-click', social: SocialLink): void
-}
-
-withDefaults(defineProps<Props>(), {
-  brandName: 'TECH FUSION',
+const props = withDefaults(defineProps<Props>(), {
   brandDescription: 'Building dream gaming rigs since 2015. Premium hardware, expert assembly, nationwide delivery.',
-  copyrightText: '© 2025 Tech Fusion. All rights reserved.',
-  socialLinks: () => [
-    { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://facebook.com/techfusion' },
-    { name: 'Twitter', icon: 'fab fa-twitter', url: 'https://twitter.com/techfusion' },
-    { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/techfusion' },
-    { name: 'YouTube', icon: 'fab fa-youtube', url: 'https://youtube.com/techfusion' },
-    { name: 'Discord', icon: 'fab fa-discord', url: 'https://discord.gg/techfusion' }
-  ],
-  productLinks: () => [
-    { name: 'Gaming PCs', url: '/gaming-pcs' },
-    { name: 'Components', url: '/components' },
-    { name: 'Accessories', url: '/accessories' },
-    { name: 'Special Deals', url: '/deals' }
-  ],
-  serviceLinks: () => [
-    { name: 'PC Builder', url: '/pc-builder' },
-    { name: 'Assembly Service', url: '/assembly' },
-    { name: 'Repairs', url: '/repairs' },
-    { name: 'Warranty', url: '/warranty' }
-  ],
-  supportLinks: () => [
-    { name: 'Contact Us', url: '/contact' },
-    { name: 'FAQ', url: '/faq' },
-    { name: 'Shipping Info', url: '/shipping' },
-    { name: 'Returns', url: '/returns' }
-  ],
-  legalLinks: () => [
-    { name: 'Privacy Policy', url: '/privacy' },
-    { name: 'Terms of Service', url: '/terms' },
-    { name: 'Cookie Policy', url: '/cookies' }
-  ],
-  contactInfo: () => [
-    { type: 'address', icon: 'place', value: '123 Tech Street, Gaming City, GC 12345' },
-    { type: 'phone', icon: 'phone', value: '+1 (555) 123-GAME' },
-    { type: 'email', icon: 'email', value: 'info@techfusion.com' },
-    { type: 'hours', icon: 'schedule', value: 'Mon-Fri: 9AM-8PM, Sat-Sun: 10AM-6PM' }
-  ]
+  copyrightText: '© 2025 Tech Fusion. All rights reserved.'
 })
 
-const emit = defineEmits<Emits>()
+defineEmits<{
+  openSocial: [url: string]
+}>()
 
-const handleSocialClick = (social: SocialLink) => {
-  emit('social-click', social)
-}
+const socialLinks = ref<SocialLink[]>([
+  { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://facebook.com/techfusion' },
+  { name: 'Twitter', icon: 'fab fa-twitter', url: 'https://twitter.com/techfusion' },
+  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/techfusion' },
+  { name: 'YouTube', icon: 'fab fa-youtube', url: 'https://youtube.com/techfusion' },
+  { name: 'Discord', icon: 'fab fa-discord', url: 'https://discord.gg/techfusion' }
+])
+
+const footerSections = ref<FooterSection[]>([
+  {
+    title: 'Products',
+    links: [
+      { label: 'Gaming PCs', href: '/gaming-pcs' },
+      { label: 'Components', href: '/components' },
+      { label: 'Accessories', href: '/accessories' },
+      { label: 'Special Deals', href: '/deals' }
+    ]
+  },
+  {
+    title: 'Services',
+    links: [
+      { label: 'PC Builder', href: '/pc-builder' },
+      { label: 'Assembly Service', href: '/assembly' },
+      { label: 'Repairs', href: '/repairs' },
+      { label: 'Warranty', href: '/warranty' }
+    ]
+  },
+  {
+    title: 'Support',
+    links: [
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'FAQ', href: '/faq' },
+      { label: 'Shipping Info', href: '/shipping' },
+      { label: 'Returns', href: '/returns' }
+    ]
+  }
+])
+
+const contactInfo = ref<ContactInfo[]>([
+  { icon: 'place', text: '123 Tech Street, Gaming City, GC 12345' },
+  { icon: 'phone', text: '+1 (555) 123-GAME' },
+  { icon: 'email', text: 'info@techfusion.com' },
+  { icon: 'schedule', text: 'Mon-Fri: 9AM-8PM, Sat-Sun: 10AM-6PM' }
+])
+
+const bottomLinks = ref<FooterLink[]>([
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
+  { label: 'Cookie Policy', href: '/cookies' }
+])
 </script>
 
 <style lang="scss" scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.landing-footer {
+  background: $bg-secondary;
+  border-top: 1px solid $border-primary;
+  padding: 3rem 0 1rem;
 }
 
-.footer {
-  background: rgb(9, 9, 11);
-  border-top: 1px solid rgb(39, 39, 42);
-  padding: 3rem 0 1rem;
+.container {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: $container-padding;
 }
 
 .footer-content {
@@ -167,9 +138,9 @@ const handleSocialClick = (social: SocialLink) => {
 
 .footer-section {
   h4 {
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
     margin-bottom: 1rem;
-    color: #fff;
+    color: $text-primary;
   }
 
   ul {
@@ -180,20 +151,20 @@ const handleSocialClick = (social: SocialLink) => {
       margin-bottom: 0.5rem;
 
       a {
-        color: rgb(161, 161, 170);
+        color: $text-secondary;
         text-decoration: none;
-        transition: color 0.2s;
+        transition: color $transition-default;
 
         &:hover {
-          color: #fff;
+          color: $text-primary;
         }
       }
     }
   }
 
   p {
-    color: rgb(161, 161, 170);
-    line-height: 1.6;
+    color: $text-secondary;
+    line-height: $line-height-normal;
     margin-bottom: 1rem;
   }
 }
@@ -210,14 +181,14 @@ const handleSocialClick = (social: SocialLink) => {
   height: 2rem;
   width: 2rem;
   overflow: hidden;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ef4444, #a855f7, #3b82f6);
+  border-radius: $border-radius-full;
+  background: linear-gradient(135deg, $brand-gradient-start, $brand-gradient-middle, $brand-gradient-end);
 }
 
 .brand-text {
-  font-weight: bold;
+  font-weight: $font-weight-bold;
   letter-spacing: 0.05em;
-  color: #fff;
+  color: $text-primary;
 }
 
 .social-links {
@@ -226,10 +197,10 @@ const handleSocialClick = (social: SocialLink) => {
 }
 
 .social-btn {
-  color: rgb(161, 161, 170);
+  color: $text-secondary;
 
   &:hover {
-    color: rgb(147, 51, 234);
+    color: $icon-primary;
   }
 }
 
@@ -239,11 +210,11 @@ const handleSocialClick = (social: SocialLink) => {
     align-items: flex-start;
     gap: 0.75rem;
     margin-bottom: 1rem;
-    color: rgb(161, 161, 170);
+    color: $text-secondary;
 
     .q-icon {
       margin-top: 0.125rem;
-      color: rgb(147, 51, 234);
+      color: $icon-primary;
     }
   }
 }
@@ -253,12 +224,12 @@ const handleSocialClick = (social: SocialLink) => {
   justify-content: space-between;
   align-items: center;
   padding-top: 2rem;
-  border-top: 1px solid rgb(39, 39, 42);
+  border-top: 1px solid $border-primary;
   flex-wrap: wrap;
   gap: 1rem;
 
   p {
-    color: rgb(161, 161, 170);
+    color: $text-secondary;
     margin: 0;
   }
 }
@@ -268,16 +239,16 @@ const handleSocialClick = (social: SocialLink) => {
   gap: 2rem;
 
   a {
-    color: rgb(161, 161, 170);
+    color: $text-secondary;
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: $font-size-small;
 
     &:hover {
-      color: #fff;
+      color: $text-primary;
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: $breakpoint-sm) {
     gap: 1rem;
   }
 }

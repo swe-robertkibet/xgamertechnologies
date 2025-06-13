@@ -1,3 +1,4 @@
+<!-- src/components/landing-page/WhyChooseUs.vue -->
 <template>
   <section class="why-choose-us">
     <div class="container">
@@ -19,56 +20,54 @@
 </template>
 
 <script setup lang="ts">
-export interface Feature {
-  icon: string
-  title: string
-  description: string
-}
+import { ref } from 'vue'
+import type { WhyChooseUsFeature } from './landing-types'
 
 interface Props {
   title?: string
   subtitle?: string
-  features?: Feature[]
+  features?: WhyChooseUsFeature[]
 }
 
 withDefaults(defineProps<Props>(), {
   title: 'Why Choose Tech Fusion?',
-  subtitle: 'Industry-leading expertise and unmatched customer service',
-  features: () => [
-    {
-      icon: 'verified',
-      title: 'Expert Assembly',
-      description: 'Professional technicians with 10+ years of experience build and test every system.'
-    },
-    {
-      icon: 'local_shipping',
-      title: 'Free Shipping',
-      description: 'Complimentary nationwide shipping on all gaming PCs and bulk component orders.'
-    },
-    {
-      icon: 'security',
-      title: '3-Year Warranty',
-      description: 'Comprehensive warranty coverage on all custom builds with lifetime tech support.'
-    },
-    {
-      icon: 'support_agent',
-      title: '24/7 Support',
-      description: 'Round-the-clock customer support from gaming enthusiasts who understand your needs.'
-    }
-  ]
+  subtitle: 'Industry-leading expertise and unmatched customer service'
 })
+
+const features = ref<WhyChooseUsFeature[]>([
+  {
+    icon: 'verified',
+    title: 'Expert Assembly',
+    description: 'Professional technicians with 10+ years of experience build and test every system.'
+  },
+  {
+    icon: 'local_shipping',
+    title: 'Free Shipping',
+    description: 'Complimentary nationwide shipping on all gaming PCs and bulk component orders.'
+  },
+  {
+    icon: 'security',
+    title: '3-Year Warranty',
+    description: 'Comprehensive warranty coverage on all custom builds with lifetime tech support.'
+  },
+  {
+    icon: 'support_agent',
+    title: '24/7 Support',
+    description: 'Round-the-clock customer support from gaming enthusiasts who understand your needs.'
+  }
+])
 </script>
 
 <style lang="scss" scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.why-choose-us {
+  padding: $section-padding;
+  background: $bg-secondary;
 }
 
-.why-choose-us {
-  padding: 5rem 0;
-  background: rgb(9, 9, 11);
+.container {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: $container-padding;
 }
 
 .section-header {
@@ -76,18 +75,18 @@ withDefaults(defineProps<Props>(), {
   margin-bottom: 3rem;
 
   h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: $font-size-section-title;
+    font-weight: $font-weight-bold;
     margin-bottom: 1rem;
-    background: linear-gradient(to right, #fff, rgb(196, 181, 253));
+    background: $gradient-section-title;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   p {
-    font-size: 1.125rem;
-    color: rgb(161, 161, 170);
+    font-size: $font-size-body;
+    color: $text-secondary;
   }
 }
 
@@ -99,26 +98,27 @@ withDefaults(defineProps<Props>(), {
 
 .feature-card {
   text-align: center;
-  padding: 2rem;
-  border-radius: 1rem;
-  background: rgba(39, 39, 42, 0.5);
-  border: 1px solid rgb(39, 39, 42);
-  transition: transform 0.2s, border-color 0.2s;
+  padding: $card-padding;
+  border-radius: $border-radius-card;
+  background: $bg-card-hover;
+  border: 1px solid $border-primary;
+  transition: $transition-transform, border-color $transition-default;
 
   &:hover {
     transform: translateY(-4px);
-    border-color: rgb(147, 51, 234);
+    border-color: $border-hover;
   }
 
   h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: $font-size-card-title;
+    font-weight: $font-weight-semibold;
     margin: 1rem 0 0.5rem;
+    color: $text-primary;
   }
 
   p {
-    color: rgb(161, 161, 170);
-    line-height: 1.6;
+    color: $text-secondary;
+    line-height: $line-height-normal;
   }
 }
 
@@ -128,9 +128,9 @@ withDefaults(defineProps<Props>(), {
   justify-content: center;
   width: 4rem;
   height: 4rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgb(147, 51, 234), rgb(59, 130, 246));
-  color: #fff;
+  border-radius: $border-radius-full;
+  background: $gradient-primary;
+  color: $text-primary;
   margin-bottom: 1rem;
 }
 </style>

@@ -1,5 +1,6 @@
+<!-- src/components/landing-page/LandingHeader.vue -->
 <template>
-  <header class="header">
+  <header class="landing-header">
     <div class="header-container">
       <div class="header-brand">
         <router-link to="/" class="brand-link">
@@ -9,11 +10,9 @@
       </div>
 
       <nav class="main-nav">
-        <router-link to="/builder" class="nav-link">PC Builder</router-link>
-        <router-link to="/gaming" class="nav-link">Gaming PCs</router-link>
-        <router-link to="/components" class="nav-link">Components</router-link>
-        <router-link to="/deals" class="nav-link">Deals</router-link>
-        <router-link to="/support" class="nav-link">Support</router-link>
+        <router-link v-for="link in navigationLinks" :key="link.href" :to="link.href" class="nav-link">
+          {{ link.label }}
+        </router-link>
       </nav>
 
       <div class="header-actions">
@@ -29,64 +28,59 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import type { NavigationLink } from './landing-types'
+
 interface Props {
   cartItemCount?: number
 }
 
-interface Emits {
-  (e: 'toggle-mobile-menu'): void
-}
-
 withDefaults(defineProps<Props>(), {
-  cartItemCount: 0
+  cartItemCount: 3
 })
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  toggleMobileMenu: []
+}>()
+
+const navigationLinks = ref<NavigationLink[]>([
+  { label: 'PC Builder', href: '/builder' },
+  { label: 'Gaming PCs', href: '/gaming' },
+  { label: 'Components', href: '/components' },
+  { label: 'Deals', href: '/deals' },
+  { label: 'Support', href: '/support' }
+])
 
 const toggleMobileMenu = () => {
-  emit('toggle-mobile-menu')
+  emit('toggleMobileMenu')
 }
 </script>
 
 <style lang="scss" scoped>
-.header {
+.landing-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: $z-header;
   width: 100%;
-  border-bottom: 1px solid rgb(39, 39, 42);
-  background: #000;
+  border-bottom: 1px solid $border-primary;
+  background: $bg-primary;
   backdrop-filter: blur(10px);
+}
 
-  &-container {
-    display: flex;
-    height: 4rem;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+.header-container {
+  display: flex;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: $container-padding;
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+}
 
-  &-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  &-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  &-btn {
-    color: #fff;
-
-    &:hover {
-      background: rgb(39, 39, 42);
-    }
-  }
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .brand-link {
@@ -102,16 +96,16 @@ const toggleMobileMenu = () => {
   height: 2rem;
   width: 2rem;
   overflow: hidden;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ef4444, #a855f7, #3b82f6);
+  border-radius: $border-radius-full;
+  background: linear-gradient(135deg, $brand-gradient-start, $brand-gradient-middle, $brand-gradient-end);
 }
 
 .brand-text {
-  font-weight: bold;
+  font-weight: $font-weight-bold;
   letter-spacing: 0.05em;
   display: none;
 
-  @media (min-width: 640px) {
+  @media (min-width: $breakpoint-sm) {
     display: inline-block;
   }
 }
@@ -121,24 +115,42 @@ const toggleMobileMenu = () => {
   align-items: center;
   gap: 2rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-md) {
     display: flex;
   }
 }
 
 .nav-link {
-  color: rgb(161, 161, 170);
+  color: $text-secondary;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: $font-weight-medium;
+  transition: color $transition-default;
 
   &:hover {
-    color: #fff;
+    color: $text-primary;
+  }
+
+  &.router-link-active {
+    color: $text-primary;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-btn {
+  color: $text-primary;
+
+  &:hover {
+    background: $bg-card;
   }
 }
 
 .mobile-only {
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-md) {
     display: none;
   }
 }

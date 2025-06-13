@@ -1,3 +1,4 @@
+<!-- src/components/landing-page/PopularBuilds.vue -->
 <template>
   <section class="popular-builds">
     <div class="container">
@@ -6,7 +7,7 @@
         <p>{{ subtitle }}</p>
       </div>
       <div class="builds-grid">
-        <div class="build-card" v-for="build in builds" :key="build.id">
+        <div class="build-card" v-for="build in builds" :key="build.name">
           <div class="build-image">
             <img :src="build.image" :alt="build.name" />
             <div class="build-badge" v-if="build.isOnSale">
@@ -23,11 +24,9 @@
             </div>
             <div class="build-pricing">
               <span class="current-price">${{ build.currentPrice }}</span>
-              <span v-if="build.originalPrice" class="original-price">
-                ${{ build.originalPrice }}
-              </span>
+              <span v-if="build.originalPrice" class="original-price">${{ build.originalPrice }}</span>
             </div>
-            <q-btn unelevated class="primary-btn full-width" @click="handleBuildClick(build)">
+            <q-btn unelevated class="primary-btn full-width" @click="$emit('viewBuild', build.id)">
               View Build
             </q-btn>
           </div>
@@ -38,84 +37,71 @@
 </template>
 
 <script setup lang="ts">
-export interface Build {
-  id: number
-  name: string
-  description: string
-  image: string
-  keySpecs: string[]
-  currentPrice: number
-  originalPrice?: number
-  isOnSale: boolean
-  discount: number
-}
+import { ref } from 'vue'
+import type { PopularBuild } from './landing-types'
 
 interface Props {
   title?: string
   subtitle?: string
-  builds?: Build[]
-}
-
-interface Emits {
-  (e: 'build-click', build: Build): void
+  builds?: PopularBuild[]
 }
 
 withDefaults(defineProps<Props>(), {
   title: 'Popular Builds & Weekly Deals',
-  subtitle: 'Hand-picked configurations from our experts',
-  builds: () => [
-    {
-      id: 1,
-      name: 'Gaming Beast Pro',
-      description: 'Ultimate 4K gaming performance',
-      image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      keySpecs: ['RTX 4080', 'i7-13700K', '32GB DDR5'],
-      currentPrice: 2799,
-      originalPrice: 3199,
-      isOnSale: true,
-      discount: 15
-    },
-    {
-      id: 2,
-      name: 'Esports Champion',
-      description: 'High FPS competitive gaming',
-      image: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      keySpecs: ['RTX 4060 Ti', 'i5-13600K', '16GB DDR5'],
-      currentPrice: 1599,
-      originalPrice: undefined,
-      isOnSale: false,
-      discount: 0
-    },
-    {
-      id: 3,
-      name: 'Budget Warrior',
-      description: '1080p gaming excellence',
-      image: 'https://images.unsplash.com/photo-1591238371406-0a39e2e7a61c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      keySpecs: ['RTX 4060', 'i5-13400F', '16GB DDR4'],
-      currentPrice: 1099,
-      originalPrice: 1299,
-      isOnSale: true,
-      discount: 20
-    }
-  ]
+  subtitle: 'Hand-picked configurations from our experts'
 })
 
-const emit = defineEmits<Emits>()
+defineEmits<{
+  viewBuild: [buildId: number]
+}>()
 
-const handleBuildClick = (build: Build) => {
-  emit('build-click', build)
-}
+const builds = ref<PopularBuild[]>([
+  {
+    id: 1,
+    name: 'Gaming Beast Pro',
+    description: 'Ultimate 4K gaming performance',
+    image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+    keySpecs: ['RTX 4080', 'i7-13700K', '32GB DDR5'],
+    currentPrice: 2799,
+    originalPrice: 3199,
+    isOnSale: true,
+    discount: 15
+  },
+  {
+    id: 2,
+    name: 'Esports Champion',
+    description: 'High FPS competitive gaming',
+    image: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+    keySpecs: ['RTX 4060 Ti', 'i5-13600K', '16GB DDR5'],
+    currentPrice: 1599,
+    originalPrice: null,
+    isOnSale: false,
+    discount: 0
+  },
+  {
+    id: 3,
+    name: 'Budget Warrior',
+    description: '1080p gaming excellence',
+    image: 'https://images.unsplash.com/photo-1591238371406-0a39e2e7a61c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+    keySpecs: ['RTX 4060', 'i5-13400F', '16GB DDR4'],
+    currentPrice: 1099,
+    originalPrice: 1299,
+    isOnSale: true,
+    discount: 20
+  }
+])
 </script>
 
 <style lang="scss" scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.popular-builds {
+  padding: $section-padding;
+  background: $bg-primary;
 }
 
-.popular-builds {
-  padding: 5rem 0;
+.container {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: $container-padding;
 }
 
 .section-header {
@@ -123,18 +109,18 @@ const handleBuildClick = (build: Build) => {
   margin-bottom: 3rem;
 
   h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: $font-size-section-title;
+    font-weight: $font-weight-bold;
     margin-bottom: 1rem;
-    background: linear-gradient(to right, #fff, rgb(196, 181, 253));
+    background: $gradient-section-title;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   p {
-    font-size: 1.125rem;
-    color: rgb(161, 161, 170);
+    font-size: $font-size-body;
+    color: $text-secondary;
   }
 }
 
@@ -145,10 +131,10 @@ const handleBuildClick = (build: Build) => {
 }
 
 .build-card {
-  background: rgb(39, 39, 42);
-  border-radius: 1rem;
+  background: $bg-card;
+  border-radius: $border-radius-card;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: $transition-transform;
 
   &:hover {
     transform: translateY(-4px);
@@ -170,25 +156,26 @@ const handleBuildClick = (build: Build) => {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgb(239, 68, 68);
-  color: #fff;
+  background: $sale-badge;
+  color: $text-primary;
   padding: 0.25rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: $border-radius-button;
+  font-size: $font-size-small;
+  font-weight: $font-weight-semibold;
 }
 
 .build-info {
-  padding: 1.5rem;
+  padding: $card-padding-small;
 
   h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: $font-size-card-title;
+    font-weight: $font-weight-semibold;
     margin-bottom: 0.5rem;
+    color: $text-primary;
   }
 
   p {
-    color: rgb(161, 161, 170);
+    color: $text-secondary;
     margin-bottom: 1rem;
   }
 }
@@ -201,11 +188,11 @@ const handleBuildClick = (build: Build) => {
 }
 
 .spec-tag {
-  background: rgb(9, 9, 11);
-  color: rgb(161, 161, 170);
+  background: $bg-secondary;
+  color: $text-secondary;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  font-size: 0.75rem;
+  font-size: $font-size-xs;
 }
 
 .build-pricing {
@@ -217,24 +204,23 @@ const handleBuildClick = (build: Build) => {
 
 .current-price {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: rgb(34, 197, 94);
+  font-weight: $font-weight-bold;
+  color: $price-current;
 }
 
 .original-price {
   font-size: 1rem;
-  color: rgb(161, 161, 170);
+  color: $price-original;
   text-decoration: line-through;
 }
 
 .primary-btn {
-  background: linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246));
-  color: #fff;
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
+  background: $gradient-primary;
+  color: $text-primary;
+  font-weight: $font-weight-medium;
 
   &:hover {
-    background: linear-gradient(to right, rgb(126, 34, 206), rgb(37, 99, 235));
+    background: $gradient-primary-hover;
   }
 
   &.full-width {

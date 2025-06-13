@@ -1,30 +1,27 @@
+<!-- src/components/landing-page/HeroSection.vue -->
 <template>
   <section class="hero-section">
     <div class="hero-background">
       <div class="hero-overlay"></div>
-      <img :src="heroImage" :alt="heroImageAlt" class="hero-image" />
+      <img :src="props.backgroundImage" alt="Gaming PC Setup" class="hero-image" />
     </div>
     <div class="hero-content">
       <div class="hero-text">
         <div class="hero-badge">
-          {{ badge }}
+          {{ props.badge }}
         </div>
-        <h1 class="hero-title">
-          <slot name="title">
-            Build Your Dream<br />
-            Gaming Rig Today
-          </slot>
+        <h1 class="hero-title" v-html="props.title">
         </h1>
         <p class="hero-subtitle">
-          {{ subtitle }}
+          {{ props.subtitle }}
         </p>
         <div class="hero-actions">
-          <q-btn unelevated class="primary-btn" @click="handlePrimaryAction">
-            {{ primaryButtonText }}
+          <q-btn unelevated class="primary-btn" @click="$emit('startCustomBuild')">
+            {{ props.primaryButtonText }}
             <q-icon name="chevron_right" class="q-ml-sm" />
           </q-btn>
-          <q-btn outline class="secondary-btn" @click="handleSecondaryAction">
-            {{ secondaryButtonText }}
+          <q-btn outline class="secondary-btn" @click="$emit('browseDeals')">
+            {{ props.secondaryButtonText }}
           </q-btn>
         </div>
       </div>
@@ -36,36 +33,26 @@
 <script setup lang="ts">
 interface Props {
   badge?: string
+  title?: string
   subtitle?: string
   primaryButtonText?: string
   secondaryButtonText?: string
-  heroImage?: string
-  heroImageAlt?: string
+  backgroundImage?: string
 }
 
-interface Emits {
-  (e: 'primary-action'): void
-  (e: 'secondary-action'): void
-}
-
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   badge: 'Premium Gaming Hardware',
+  title: 'Build Your Dream<br />Gaming Rig Today',
   subtitle: 'Premium Gaming Hardware • Expert Builds • Delivered Nationwide',
   primaryButtonText: 'Start Your Custom Build',
   secondaryButtonText: 'Browse Hot Deals',
-  heroImage: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-  heroImageAlt: 'Gaming PC Setup'
+  backgroundImage: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'
 })
 
-const emit = defineEmits<Emits>()
-
-const handlePrimaryAction = () => {
-  emit('primary-action')
-}
-
-const handleSecondaryAction = () => {
-  emit('secondary-action')
-}
+defineEmits<{
+  startCustomBuild: []
+  browseDeals: []
+}>()
 </script>
 
 <style lang="scss" scoped>
@@ -84,8 +71,8 @@ const handleSecondaryAction = () => {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, #000, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
-  z-index: 10;
+  background: $hero-overlay;
+  z-index: $z-overlay;
 }
 
 .hero-image {
@@ -96,13 +83,13 @@ const handleSecondaryAction = () => {
 
 .hero-content {
   position: relative;
-  z-index: 20;
+  z-index: $z-hero-content;
   display: flex;
   height: 100%;
   align-items: center;
-  max-width: 1200px;
+  max-width: $breakpoint-xl;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: $container-padding;
 }
 
 .hero-text {
@@ -113,29 +100,29 @@ const handleSecondaryAction = () => {
 }
 
 .hero-badge {
-  background: rgba(147, 51, 234, 0.2);
-  color: rgb(196, 181, 253);
+  background: $hero-badge-bg;
+  color: $hero-badge-text;
   padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
+  border-radius: $border-radius-full;
+  font-size: $font-size-small;
   display: inline-block;
   width: fit-content;
 }
 
 .hero-title {
-  font-size: clamp(2rem, 8vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: $font-size-hero;
+  font-weight: $font-weight-extrabold;
+  line-height: $line-height-tight;
   letter-spacing: -0.025em;
-  background: linear-gradient(to right, #fff, rgb(196, 181, 253), rgb(147, 197, 253));
+  background: $gradient-text;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  color: rgb(161, 161, 170);
+  font-size: $font-size-body;
+  color: $text-secondary;
 }
 
 .hero-actions {
@@ -150,29 +137,29 @@ const handleSecondaryAction = () => {
   left: 0;
   right: 0;
   height: 6rem;
-  background: linear-gradient(to top, #000, transparent);
+  background: linear-gradient(to top, $bg-primary, transparent);
 }
 
 .primary-btn {
-  background: linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246));
-  color: #fff;
-  font-weight: 500;
+  background: $gradient-primary;
+  color: $text-primary;
+  font-weight: $font-weight-medium;
   padding: 0.75rem 1.5rem;
 
   &:hover {
-    background: linear-gradient(to right, rgb(126, 34, 206), rgb(37, 99, 235));
+    background: $gradient-primary-hover;
   }
 }
 
 .secondary-btn {
-  border: 1px solid rgb(113, 113, 122);
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  font-weight: 500;
+  border: 1px solid $btn-secondary-border;
+  background: $btn-secondary-bg;
+  color: $text-primary;
+  font-weight: $font-weight-medium;
   padding: 0.75rem 1.5rem;
 
   &:hover {
-    background: rgb(39, 39, 42);
+    background: $btn-secondary-hover;
   }
 }
 </style>
