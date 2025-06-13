@@ -19,6 +19,50 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
 
     <style>
+      /* Reserve scrollbar space but control when scrolling is enabled */
+      html {
+        scrollbar-gutter: stable; /* Always reserve space for scrollbar */
+      }
+
+      /* Disable scroll during loading */
+      body.loading {
+        overflow: hidden; /* Prevent scrolling during loading */
+        height: 100vh; /* Lock height to viewport */
+      }
+
+      /* Enable scroll after loading */
+      body {
+        margin: 0;
+        padding: 0;
+        /* Normal scrolling will be enabled when .loading class is removed */
+      }
+
+      /* Custom scrollbar styling to match your theme */
+      /* Webkit browsers (Chrome, Safari) */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(147, 51, 234, 0.4);
+        border-radius: 6px;
+        border: 2px solid #000000;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(147, 51, 234, 0.6);
+      }
+
+      /* Firefox */
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(147, 51, 234, 0.4) #000000;
+      }
+
       /* Initial Loading Screen Styles */
       #initial-loader {
         position: fixed;
@@ -278,13 +322,19 @@
         }
       }
 
-      /* Hide scrollbars during loading */
-      body {
-        overflow: hidden;
+      /* Prevent text selection and user interactions during loading */
+      body.loading {
+        user-select: none;
+        pointer-events: none;
+      }
+
+      /* Re-enable interactions after loading */
+      body.loading #initial-loader {
+        pointer-events: auto;
       }
     </style>
   </head>
-  <body>
+  <body class="loading">
     <!-- Initial Loading Screen -->
     <div id="initial-loader">
       <div class="circuit-bg"></div>
@@ -328,10 +378,11 @@
           const loader = document.getElementById('initial-loader');
           if (loader) {
             loader.classList.add('fade-out');
-            // Remove the loader after fade animation
+
+            // Remove the loader after fade animation and enable scrolling
             setTimeout(() => {
               loader.style.display = 'none';
-              document.body.style.overflow = 'auto'; // Restore scrolling
+              document.body.classList.remove('loading'); // This enables scrolling
             }, 500);
           }
         }, remaining);
@@ -349,6 +400,59 @@
         // This ensures the loader is hidden even if some resources are still loading
         setTimeout(hideLoader, 100);
       });
+
+      // Optional: Prevent scroll wheel and touch scroll during loading
+      function preventScroll(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      // Add event listeners to prevent scroll during loading
+      function disableScrollEvents() {
+        document.addEventListener('wheel', preventScroll, { passive: false });
+        document.addEventListener('touchmove', preventScroll, { passive: false });
+        document.addEventListener(
+          'keydown',
+          function (e) {
+            // Prevent arrow keys, page up/down, space, home, end
+            if ([32, 33, 34, 35, 36, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+              e.preventDefault();
+            }
+          },
+          { passive: false },
+        );
+      }
+
+      // Remove event listeners after loading
+      function enableScrollEvents() {
+        document.removeEventListener('wheel', preventScroll);
+        document.removeEventListener('touchmove', preventScroll);
+        // Note: We don't remove keydown listener as it's anonymous, but body.loading class handles it
+      }
+
+      // Initialize scroll prevention
+      disableScrollEvents();
+
+      // Modify hideLoader to also enable scroll events
+      const originalHideLoader = hideLoader;
+      hideLoader = function () {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, minLoadTime - elapsed);
+
+        setTimeout(() => {
+          const loader = document.getElementById('initial-loader');
+          if (loader) {
+            loader.classList.add('fade-out');
+
+            setTimeout(() => {
+              loader.style.display = 'none';
+              document.body.classList.remove('loading');
+              enableScrollEvents(); // Enable scroll events
+            }, 500);
+          }
+        }, remaining);
+      };
     </script>
 
     <!-- quasar:entry-point -->
