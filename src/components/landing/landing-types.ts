@@ -111,3 +111,8 @@ export interface ThemeColors {
   text: string;
   textSecondary: string;
 }
+
+export interface ServiceStat {
+  value: string;
+  label: string;
+}
