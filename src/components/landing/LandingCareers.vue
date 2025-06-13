@@ -9,7 +9,7 @@
           <div class="open-positions">
             <h4>{{ props.positionsTitle }}</h4>
             <ul>
-              <li v-for="position in (props.openPositions || openPositions)" :key="position">
+              <li v-for="position in (props.openPositions || defaultOpenPositions)" :key="position">
                 {{ position }}
               </li>
             </ul>
@@ -20,7 +20,7 @@
           </q-btn>
         </div>
         <div class="careers-stats">
-          <div class="stat-card" v-for="stat in (props.stats || stats)" :key="stat.label">
+          <div class="stat-card" v-for="stat in (props.stats || defaultStats)" :key="stat.label">
             <h3>{{ stat.value }}</h3>
             <p>{{ stat.label }}</p>
           </div>
@@ -54,14 +54,14 @@ defineEmits<{
   viewCareers: []
 }>()
 
-const openPositions = ref<string[]>([
+const defaultOpenPositions = ref<string[]>([
   'Senior PC Technician',
   'Customer Support Specialist',
   'Warehouse Operations Manager',
   'Digital Marketing Coordinator'
 ])
 
-const stats = ref<CareerStat[]>([
+const defaultStats = ref<CareerStat[]>([
   { value: '50+', label: 'Team Members' },
   { value: '98%', label: 'Employee Satisfaction' },
   { value: '5★', label: 'Glassdoor Rating' }

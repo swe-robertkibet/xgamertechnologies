@@ -43,7 +43,7 @@ const emit = defineEmits<{
 const email = ref('')
 const isSubscribing = ref(false)
 
-const handleSubscribe = async () => {
+const handleSubscribe = () => {
   if (!email.value) return
 
   isSubscribing.value = true

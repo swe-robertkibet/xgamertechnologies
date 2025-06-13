@@ -10,7 +10,7 @@
           </div>
           <p>{{ props.brandDescription }}</p>
           <div class="social-links">
-            <q-btn v-for="social in (props.socialLinks || socialLinks)" :key="social.name" round flat
+            <q-btn v-for="social in (props.socialLinks || defaultSocialLinks)" :key="social.name" round flat
               :icon="social.icon" class="social-btn" @click="$emit('openSocial', social.url)" />
           </div>
         </div>
@@ -64,7 +64,7 @@ defineEmits<{
   openSocial: [url: string]
 }>()
 
-const socialLinks = ref<SocialLink[]>([
+const defaultSocialLinks = ref<SocialLink[]>([
   { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://facebook.com/techfusion' },
   { name: 'Twitter', icon: 'fab fa-twitter', url: 'https://twitter.com/techfusion' },
   { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/techfusion' },

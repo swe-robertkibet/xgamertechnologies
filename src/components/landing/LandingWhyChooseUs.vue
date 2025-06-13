@@ -7,7 +7,7 @@
         <p>{{ subtitle }}</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card" v-for="feature in features" :key="feature.title">
+        <div class="feature-card" v-for="feature in (features || defaultFeatures)" :key="feature.title">
           <div class="feature-icon">
             <q-icon :name="feature.icon" size="2rem" />
           </div>
@@ -29,12 +29,13 @@ interface Props {
   features?: WhyChooseUsFeature[]
 }
 
-withDefaults(defineProps<Props>(), {
-  title: 'Why Choose Tech Fusion?',
-  subtitle: 'Industry-leading expertise and unmatched customer service'
-})
+const {
+  title = 'Why Choose Tech Fusion?',
+  subtitle = 'Industry-leading expertise and unmatched customer service',
+  features
+} = defineProps<Props>()
 
-const features = ref<WhyChooseUsFeature[]>([
+const defaultFeatures = ref<WhyChooseUsFeature[]>([
   {
     icon: 'verified',
     title: 'Expert Assembly',

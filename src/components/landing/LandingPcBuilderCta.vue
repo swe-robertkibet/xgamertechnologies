@@ -7,7 +7,7 @@
           <h2>{{ props.title }}</h2>
           <p>{{ props.description }}</p>
           <div class="cta-features">
-            <div class="cta-feature" v-for="feature in features" :key="feature">
+            <div class="cta-feature" v-for="feature in (props.features || defaultFeatures)" :key="feature">
               <q-icon name="check_circle" color="green" />
               <span>{{ feature }}</span>
             </div>
@@ -51,7 +51,7 @@ defineEmits<{
   startBuilder: []
 }>()
 
-const features = ref<string[]>([
+const defaultFeatures = ref<string[]>([
   'Compatibility Guaranteed',
   'Expert Assembly Available',
   '3-Year Warranty'

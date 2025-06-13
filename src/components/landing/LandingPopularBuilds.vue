@@ -7,7 +7,7 @@
         <p>{{ subtitle }}</p>
       </div>
       <div class="builds-grid">
-        <div class="build-card" v-for="build in builds" :key="build.name">
+        <div class="build-card" v-for="build in (builds || defaultBuilds)" :key="build.name">
           <div class="build-image">
             <img :src="build.image" :alt="build.name" />
             <div class="build-badge" v-if="build.isOnSale">
@@ -46,16 +46,17 @@ interface Props {
   builds?: PopularBuild[]
 }
 
-withDefaults(defineProps<Props>(), {
-  title: 'Popular Builds & Weekly Deals',
-  subtitle: 'Hand-picked configurations from our experts'
-})
+const {
+  title = 'Popular Builds & Weekly Deals',
+  subtitle = 'Hand-picked configurations from our experts',
+  builds
+} = defineProps<Props>()
 
 defineEmits<{
   viewBuild: [buildId: number]
 }>()
 
-const builds = ref<PopularBuild[]>([
+const defaultBuilds = ref<PopularBuild[]>([
   {
     id: 1,
     name: 'Gaming Beast Pro',

@@ -7,7 +7,7 @@
         <p>{{ subtitle }}</p>
       </div>
       <div class="categories-grid">
-        <div class="category-card" v-for="category in categories" :key="category.title"
+        <div class="category-card" v-for="category in (categories || defaultCategories)" :key="category.title"
           @click="$emit('navigateToCategory', category.slug)">
           <div class="category-image">
             <img :src="category.image" :alt="category.title" />
@@ -36,16 +36,17 @@ interface Props {
   categories?: FeaturedCategory[]
 }
 
-withDefaults(defineProps<Props>(), {
-  title: 'Featured Categories',
-  subtitle: 'Explore our premium gaming hardware collection'
-})
+const {
+  title = 'Featured Categories',
+  subtitle = 'Explore our premium gaming hardware collection',
+  categories
+} = defineProps<Props>()
 
 defineEmits<{
   navigateToCategory: [slug: string]
 }>()
 
-const categories = ref<FeaturedCategory[]>([
+const defaultCategories = ref<FeaturedCategory[]>([
   {
     title: 'Gaming PCs',
     description: 'High-performance pre-built systems',

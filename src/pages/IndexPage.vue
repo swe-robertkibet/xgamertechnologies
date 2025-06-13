@@ -4,21 +4,21 @@
     <LandingHeader :cart-item-count="cartItemCount" @toggle-mobile-menu="handleToggleMobileMenu" />
 
     <main>
-      <HeroSection @start-custom-build="handleStartCustomBuild" @browse-deals="handleBrowseDeals" />
+      <LandingHero @start-custom-build="handleStartCustomBuild" @browse-deals="handleBrowseDeals" />
 
-      <WhyChooseUs />
+      <LandingWhyChooseUs />
 
-      <FeaturedCategories @navigate-to-category="handleNavigateToCategory" />
+      <LandingFeaturedCategories @navigate-to-category="handleNavigateToCategory" />
 
-      <PcBuilderCta @start-builder="handleStartBuilder" />
+      <LandingPcBuilderCta @start-builder="handleStartBuilder" />
 
-      <PopularBuilds @view-build="handleViewBuild" />
+      <LandingPopularBuilds @view-build="handleViewBuild" />
 
-      <RepairServices @book-repair="handleBookRepair" />
+      <LandingRepairServices @book-repair="handleBookRepair" />
 
-      <CareersPreview @view-careers="handleViewCareers" />
+      <LandingCareers @view-careers="handleViewCareers" />
 
-      <NewsletterSignup @subscribe="handleSubscribeNewsletter" />
+      <LandingNewsletter @subscribe="handleSubscribeNewsletter" />
     </main>
 
     <LandingFooter @open-social="handleOpenSocial" />
@@ -29,17 +29,19 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-// Import all landing page components
-import LandingHeader from 'components/landing/LandingHeader.vue'
-import HeroSection from 'components/landing/HeroSection.vue'
-import WhyChooseUs from 'components/landing/WhyChooseUs.vue'
-import FeaturedCategories from 'components/landing/FeaturedCategories.vue'
-import PcBuilderCta from 'components/landing/PcBuilderCta.vue'
-import PopularBuilds from 'components/landing/PopularBuilds.vue'
-import RepairServices from 'components/landing/RepairServices.vue'
-import CareersPreview from 'components/landing/CareersPreview.vue'
-import NewsletterSignup from 'components/landing/NewsletterSignup.vue'
-import LandingFooter from 'components/landing/LandingFooter.vue'
+// Import all landing page components from centralized index
+import {
+  LandingHeader,
+  LandingHero,
+  LandingWhyChooseUs,
+  LandingFeaturedCategories,
+  LandingPcBuilderCta,
+  LandingPopularBuilds,
+  LandingRepairServices,
+  LandingCareers,
+  LandingNewsletter,
+  LandingFooter
+} from 'components/landing'
 
 const router = useRouter()
 
