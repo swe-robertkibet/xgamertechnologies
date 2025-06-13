@@ -58,7 +58,7 @@ defineEmits<{
 <style lang="scss" scoped>
 .hero-section {
   position: relative;
-  height: 85vh;
+  height: calc(100vh - 4rem); // Subtract header height (4rem) to make header + hero = 100vh
   overflow: hidden;
 }
 
@@ -160,6 +160,34 @@ defineEmits<{
 
   &:hover {
     background: $btn-secondary-hover;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+  .hero-section {
+    height: calc(100vh - 4rem); // Keep same calculation on mobile
+  }
+
+  .hero-text {
+    max-width: 100%;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .primary-btn,
+    .secondary-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .hero-section {
+    height: calc(100vh - 4rem); // Maintain full height minus header
   }
 }
 </style>
