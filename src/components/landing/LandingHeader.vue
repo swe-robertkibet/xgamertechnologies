@@ -5,7 +5,7 @@
       <div class="header-brand">
         <router-link to="/" class="brand-link">
           <div class="logo-gradient"></div>
-          <span class="brand-text">TECH FUSION</span>
+          <span class="brand-text">XGAMERtechnologies</span>
         </router-link>
       </div>
 

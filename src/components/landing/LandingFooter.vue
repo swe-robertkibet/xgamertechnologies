@@ -60,7 +60,7 @@
               <div class="footer-logo">
                 <div class="logo-gradient"></div>
                 <div class="brand-info">
-                  <span class="brand-text">TECH FUSION</span>
+                  <span class="brand-text">XGAMERtechnologies</span>
                   <span class="brand-tagline">Gaming Excellence Since 2015</span>
                 </div>
               </div>
@@ -198,7 +198,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   brandDescription: 'Building dream gaming rigs since 2015. Premium hardware, expert assembly, nationwide delivery.',
-  copyrightText: '© 2025 Tech Fusion. All rights reserved.'
+  copyrightText: '© 2025 XGAMERtechnologies. All rights reserved.'
 })
 
 const emit = defineEmits<{
@@ -232,11 +232,11 @@ const handleLinkClick = (href: string, event: Event) => {
 }
 
 const defaultSocialLinks = ref<SocialLink[]>([
-  { name: 'Discord', icon: 'fab fa-discord', url: 'https://discord.gg/techfusion' },
-  { name: 'YouTube', icon: 'fab fa-youtube', url: 'https://youtube.com/techfusion' },
-  { name: 'Twitter', icon: 'fab fa-twitter', url: 'https://twitter.com/techfusion' },
-  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/techfusion' },
-  { name: 'TikTok', icon: 'fab fa-tiktok', url: 'https://tiktok.com/@techfusion' }
+  { name: 'Discord', icon: 'fab fa-discord', url: 'https://discord.gg/XGAMERtechnologies' },
+  { name: 'YouTube', icon: 'fab fa-youtube', url: 'https://youtube.com/XGAMERtechnologies' },
+  { name: 'Twitter', icon: 'fab fa-twitter', url: 'https://twitter.com/XGAMERtechnologies' },
+  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/XGAMERtechnologies' },
+  { name: 'TikTok', icon: 'fab fa-tiktok', url: 'https://tiktok.com/@XGAMERtechnologies' }
 ])
 
 const footerSections = ref<FooterSectionExtended[]>([
@@ -283,7 +283,7 @@ const contactInfo = ref<ContactInfoExtended[]>([
   },
   {
     icon: 'email',
-    text: 'hello@techfusion.com',
+    text: 'hello@XGAMERtechnologies.com',
     subtext: 'General Inquiries'
   },
   {

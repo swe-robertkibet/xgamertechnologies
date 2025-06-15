@@ -30,7 +30,7 @@ interface Props {
 }
 
 const {
-  title = 'Why Choose Tech Fusion?',
+  title = 'Why Choose XGAMERtechnologies',
   subtitle = 'Industry-leading expertise and unmatched customer service',
   features
 } = defineProps<Props>()
